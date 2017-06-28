@@ -82,11 +82,14 @@ def show_user():
 
 @app.route('/user/friends')
 def show_friends():
-	name = request.cookies.get('userID')
-	print(name)
-	#active_user = skier.all_skiers[int(userid)]
-	#amigos=active_user.group.members
-	amigos=[["Rolf",True],["Cristobal",False],["Ale <3", False]]
+	amigos = []
+	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
+	if yo.group:
+		for member in yo.group.members:
+			if member != yo:
+				amigos.append([str(member), member.alert])
+	else:
+		amigos=[]
 	return render_template("friends.html",results=amigos)
 
 
