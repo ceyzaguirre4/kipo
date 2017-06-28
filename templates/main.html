@@ -24,8 +24,7 @@
         <div class="row" style="margin-top:20px">
             <div class="col-md-6">
                 <form name="myform" action="/register" method="post" id="custom-search-form" class="form-search form-horizontal pull-right">
-                  <input class="username" type="text" name="identificador" placeholder="Codigo Manual" autofocus style="opacity:0;
-filter:alpha(opacity=0);"></input>
+                  <input class="username" type="text" name="identificador" placeholder="Codigo Manual" autofocus onblur="focusFunc()" id="user"></input>
                 </form>
             </div>
         </div>
@@ -51,7 +50,9 @@ mantener el focus !!!
     <script src="{{ url_for('static',filename='js/bootstrap.min.js')}}"></script>
     
     <script>
-
+    function focusFunc() {
+        $('#user').focus();
+    }
     </script>
     
   </body>
