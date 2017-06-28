@@ -89,6 +89,11 @@ def show_friends():
 	amigos=[["Rolf",True],["Cristobal",False],["Ale <3", False]]
 	return render_template("friends.html",results=amigos)
 
+@app.route('/user/group')
+def create_group():
+	amigos=[["Rolf",True],["Cristobal",False],["Ale <3", False]]
+	return render_template("armar_grupo.html",results=amigos)
+
 @app.route('/main/<int:userid>')
 def show_main(userid):
 	# show the user profile for that user
