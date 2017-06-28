@@ -95,3 +95,12 @@
     margin-top: 10px;
     margin-left: 0px!important;
 }
+
+.place-amigo{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    line-height: 0;
+    font-size: 20px;
+    text-align: left;
+    color: #70CFBC!important;
+}
