@@ -1,6 +1,7 @@
 
 .button-main{
-    background-color: #04c93b!important;
+    border-radius: 15px !important;
+    background-color: #17A086!important;
     color: #fff!important;
     cursor: pointer;
     display: inline-block;
@@ -36,7 +37,7 @@
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     line-height: 1;
-    color:#04c93b!important;
+    color:#17A086!important;
     font-size: 30px;
     padding: 1.25em;
 }
@@ -44,7 +45,7 @@
 .add-name{
     border-bottom-style: solid;
     border-bottom-width: 3px ;
-    border-bottom-color: #04c93b;
+    border-bottom-color: #17A086;
     color: #000!important;
     display: inline-block;
     font-family: 'Montserrat', sans-serif;
@@ -76,7 +77,8 @@
 }
 
 .button-input{
-    background-color: #04c93b!important;
+    border-radius: 15px!important;
+    background-color: #17A086!important;
     color: #fff!important;
     cursor: pointer;
     display: inline-block;
