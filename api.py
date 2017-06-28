@@ -92,7 +92,7 @@ def show_friends():
 @app.route('/user/group')
 def create_group():
 	amigos=[["Rolf",True],["Cristobal",False],["Ale <3", False]]
-	return render_template("armar_grupo.html",results=amigos)
+	return render_template("armar_grupo.html",results=amigos, number=4-len(amigos))
 
 @app.route('/main/<int:userid>')
 def show_main(userid):
