@@ -44,17 +44,15 @@
             </div>
         </div>
         {% endfor %}
-        {% for i in range(number) %}
           <div class="row" style="margin-top:20px">
             <div class="col-md-2">
             </div>
             <div class="col-md-4 add-name">
             <form action="/add_friends" method="post" id="custom-search-form" class="form-search form-horizontal pull-right">
-                <input type="text" placeholder="Ingrese indentificador o acerque tarjeta" class="input-name" name="identificador_amigo" autofocus></input>
+                <input type="text" placeholder="Ingrese indentificador o acerque tarjeta" class="input-name" name="identificador_amigo" autofocus id="inputero" onblur="focusFunc()"></input>
             </form>
             </div>
         </div>
-        {% endfor %}
         
     </div>
 
@@ -72,6 +70,9 @@
     function goBack() {
           window.history.back();
       }
+    function focusFunc() {
+        $('#inputero').focus();
+    }
 
     </script>
     
