@@ -49,7 +49,7 @@
                 <div class="add-name">{{name}}</div>
             </div>
             <div class="col-md-3">
-                <a class="btn button-input">Asignar Nombre</a>
+                <button class="btn button-input" value={{alert}} id="name_assign">Asignar Nombre</button>
             </div>
         </div>
         {% endfor %}
@@ -87,6 +87,9 @@
     function focusFunc() {
         $('#inputero').focus();
     }
+    $('#name_assign').on('click', function(){
+      console.log($(this).val())
+      })
 
     </script>
     
