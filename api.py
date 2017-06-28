@@ -92,8 +92,15 @@ def show_friends():
 
 @app.route('/user/group')
 def create_group():
-	amigos=[["Rolf",True],["Cristobal",False],["Ale <3", False]]
-	return render_template("armar_grupo.html",results=amigos, number=4-len(amigos))
+	amigos = []
+	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
+	if yo.group:
+		for member in yo.group.members:
+			if member != yo:
+				amigos.append([str(member), member.alert])
+	else:
+		amigos=[]
+	return render_template("armar_grupo.html",results=amigos, number=1)
 
 
 @app.route('/main/<int:userid>')
@@ -143,29 +150,29 @@ def register():
 def add_friends():
 	if request.method == 'POST':
 		identificador_amigo = request.form['identificador_amigo']
-		identificador = request.form['identificador']
+		identificador = request.cookies.get('userID')
 		print("El agregado es '" + str(traducir(identificador_amigo)) + "'")
 		print("yo: " + identificador)
-		adder = skier.all_skiers[int(identificador)]
+		adder = skier.all_skiers[int(traducir(identificador))]
 		if not adder.group:
 			adder.group = group(adder)
 		adder.group.add_member(traducir(identificador_amigo, True))
-		return redirect('/main/{}'.format(identificador))
+		return redirect('/user/group')
 	else:
 		return "404 add_friends Intente de nuevo"
 
 
 
-@app.route('/alert', methods=['GET', 'POST'])
-def alert():
-	if request.method == 'POST':
-		identificador = request.form['identificador']
-		print("yo alerta: " + identificador)
-		adder = skier.all_skiers[int(identificador)]
-		adder.alert = True
-		return redirect('/main/{}'.format(identificador))
-	else:
-		return "404 alert Intente de nuevo"
+# @app.route('/alert', methods=['GET', 'POST'])
+# def alert():
+# 	if request.method == 'POST':
+# 		identificador = request.form['identificador']
+# 		print("yo alerta: " + identificador)
+# 		adder = skier.all_skiers[int(identificador)]
+# 		adder.alert = True
+# 		return redirect('/main/{}'.format(identificador))
+# 	else:
+# 		return "404 alert Intente de nuevo"
 
 if __name__ == "__main__":
     app.run()

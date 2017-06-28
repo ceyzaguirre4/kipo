@@ -49,7 +49,9 @@
             <div class="col-md-2">
             </div>
             <div class="col-md-4 add-name">
-                <input type="text" placeholder="Ingrese indentificador" class="input-name"></input>
+            <form action="/add_friends" method="post" id="custom-search-form" class="form-search form-horizontal pull-right">
+                <input type="text" placeholder="Ingrese indentificador o acerque tarjeta" class="input-name" name="identificador_amigo" autofocus></input>
+            </form>
             </div>
         </div>
         {% endfor %}
