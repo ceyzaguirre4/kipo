@@ -65,14 +65,6 @@ def traducir(numero, ret_object=False):
 @app.route("/")
 def index():
 	# main page
-	a = """
-<link rel= "stylesheet" type= "text/css" href= "/static/styles/style.css">
-<body background="/static/pantalla.png">
-<form action="/register" method="post" id="custom-search-form" class="form-search form-horizontal pull-right">
-  <input type="text" name="identificador" placeholder="identificador" autofocus></input>
-</form>
-</body>
-"""
 	return render_template("main.html")
 
 
@@ -85,9 +77,9 @@ def show_friends():
 	amigos = []
 	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
 	if yo.group:
-		for member in yo.group.members:
+		for index, member in enumerate(yo.group.members):
 			if member != yo:
-				amigos.append([str(member), member.alert])
+				amigos.append([str(member), member.alert, index])
 	else:
 		amigos=[]
 	return render_template("friends.html",results=amigos)
@@ -134,36 +126,28 @@ def create_group():
 
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
 	# receive card data
-	if request.method == 'POST':
-		identificador = request.form['identificador']
-		print("El numero es '" + identificador + "'")
-		resp = make_response(render_template('user.html'))
-		resp.set_cookie('userID', identificador)
-		return resp
-		#return redirect('/main/{}'.format(traducir(identificador)))
-	else:
-		return "404 register Intente de nuevo"
+	identificador = request.form['identificador']
+	print("El numero es '" + identificador + "'")
+	resp = make_response(render_template('user.html'))
+	resp.set_cookie('userID', identificador)
+	return resp
 
 
-
-@app.route('/add_friends', methods=['GET', 'POST'])
+@app.route('/add_friends', methods=['POST'])
 def add_friends():
 	# recibe id de amigo a agregar
-	if request.method == 'POST':
-		identificador_amigo = request.form['identificador_amigo']
-		identificador = request.cookies.get('userID')
-		print("El agregado es '" + str(traducir(identificador_amigo)) + "'")
-		print("yo: " + identificador)
-		adder = skier.all_skiers[int(traducir(identificador))]
-		if not adder.group:
-			adder.group = group(adder)
-		adder.group.add_member(traducir(identificador_amigo, True))
-		return redirect('/user/group')
-	else:
-		return "404 add_friends Intente de nuevo"
+	identificador_amigo = request.form['identificador_amigo']
+	identificador = request.cookies.get('userID')
+	print("El agregado es '" + str(traducir(identificador_amigo)) + "'")
+	print("yo: " + identificador)
+	adder = skier.all_skiers[int(traducir(identificador))]
+	if not adder.group:
+		adder.group = group(adder)
+	adder.group.add_member(traducir(identificador_amigo, True))
+	return redirect('/user/group')
 
 
 @app.route('/alert')
@@ -172,6 +156,28 @@ def alert():
 	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
 	yo.alert = True
 	return redirect('user')
+
+@app.route('/friend_history/<int:index>')
+def friend_history(index):
+	# llamado por friends.html devuelve el indice en la lista de amigos del clickeado
+	return "friend history"
+
+
+# @app.route('/print_test', methods=['GET', 'POST'])
+# def print_test():
+# 	# funcion para hacer testing
+# 	if request.method == 'POST':
+# 		print("POST")
+# 		index = request.form['index']
+# 		print(index*100)
+
+# 	else: 
+# 		print("GET")
+
+# 	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
+# 	print(yo.group.members)
+# 	print("test ", str(yo))
+# 	return redirect('user')
 
 
 if __name__ == "__main__":
