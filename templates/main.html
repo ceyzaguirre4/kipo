@@ -23,20 +23,21 @@
     <div class="container">
         <div class="row" style="margin-top:20px">
             <div class="col-md-6">
-                <form action="/register" method="post" id="custom-search-form" class="form-search form-horizontal pull-right">
+                <form name="myform" action="/register" method="post" id="custom-search-form" class="form-search form-horizontal pull-right">
                   <input class="username" type="text" name="identificador" placeholder="Codigo Manual" autofocus style="opacity:0;
 filter:alpha(opacity=0);"></input>
                 </form>
             </div>
         </div>
     </div>
-<!--
-agregar lo de hidden !!!
-    <script type=text/javascript>
-        $(document).ready(function () {
-            setTimeout("$('.username').focus();", 500);
 
-        });
+<!-- 
+mantener el focus !!!
+    <script type="text/javascript">
+        function FocusOnInput()
+        {
+             document.myform.identificador.focus();
+        }
     </script>
 -->
 
