@@ -106,31 +106,31 @@ def create_group():
 	return render_template("armar_grupo.html",results=amigos, number=1)
 
 
-@app.route('/main/<int:userid>')
-def show_main(userid):
-	# show the user profile for that user
-	amigos = ""
-	active_user = skier.all_skiers[int(userid)]
-	if active_user.group:
-		for amigo in active_user.group.members:
-			amigos += "<p>" + str(amigo) + "  status alert: " + str(amigo.alert) + "</p>"
-	return """
-<link rel= "stylesheet" type= "text/css" href= "/static/styles/style.css">
-<body background="/static/pantalla.png">
-<h1>agregar amigos</h1>
-<form action="/add_friends" method="post" id="custom-search-form" class="form-search form-horizontal pull-right">
-  <input type="hidden" name="identificador" value="{}">
-  <input type="text" name="identificador_amigo" placeholder="identificador" autofocus></input>
-  """.format(userid) + amigos + """  
-  <img src="/static/pantalla.png" width="1200">
-</form>
-<form action="/alert" method="post">
-	<input type="hidden" name="identificador" value="{}">
-    <input type="submit" value="ALERT" />
-</form>
-<p>alert status = {}</p>
-</body>
-""".format(userid, active_user.alert)
+# @app.route('/main/<int:userid>')
+# def show_main(userid):
+# 	# show the user profile for that user
+# 	amigos = ""
+# 	active_user = skier.all_skiers[int(userid)]
+# 	if active_user.group:
+# 		for amigo in active_user.group.members:
+# 			amigos += "<p>" + str(amigo) + "  status alert: " + str(amigo.alert) + "</p>"
+# 	return """
+# <link rel= "stylesheet" type= "text/css" href= "/static/styles/style.css">
+# <body background="/static/pantalla.png">
+# <h1>agregar amigos</h1>
+# <form action="/add_friends" method="post" id="custom-search-form" class="form-search form-horizontal pull-right">
+#   <input type="hidden" name="identificador" value="{}">
+#   <input type="text" name="identificador_amigo" placeholder="identificador" autofocus></input>
+#   """.format(userid) + amigos + """  
+#   <img src="/static/pantalla.png" width="1200">
+# </form>
+# <form action="/alert" method="post">
+# 	<input type="hidden" name="identificador" value="{}">
+#     <input type="submit" value="ALERT" />
+# </form>
+# <p>alert status = {}</p>
+# </body>
+# """.format(userid, active_user.alert)
 
 
 
@@ -151,6 +151,7 @@ def register():
 
 @app.route('/add_friends', methods=['GET', 'POST'])
 def add_friends():
+	# recibe id de amigo a agregar
 	if request.method == 'POST':
 		identificador_amigo = request.form['identificador_amigo']
 		identificador = request.cookies.get('userID')
@@ -165,17 +166,13 @@ def add_friends():
 		return "404 add_friends Intente de nuevo"
 
 
+@app.route('/alert')
+def alert():
+	# recibe solicitud de alerta
+	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
+	yo.alert = True
+	return redirect('user')
 
-# @app.route('/alert', methods=['GET', 'POST'])
-# def alert():
-# 	if request.method == 'POST':
-# 		identificador = request.form['identificador']
-# 		print("yo alerta: " + identificador)
-# 		adder = skier.all_skiers[int(identificador)]
-# 		adder.alert = True
-# 		return redirect('/main/{}'.format(identificador))
-# 	else:
-# 		return "404 alert Intente de nuevo"
 
 if __name__ == "__main__":
     app.run()
