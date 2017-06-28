@@ -1,0 +1,16 @@
+.navbar .navbar-nav {
+    display: inline-block;
+    float: none;
+}
+
+.navbar .navbar-collapse {
+    text-align: center;
+}
+
+.navbar{
+	border-color: transparent;
+}
+
+#search-filter-tabs, #filter-content{
+	margin-left: 10px;
+}

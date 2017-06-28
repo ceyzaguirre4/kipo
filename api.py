@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from flask import request, redirect
+from flask import request, redirect, render_template, make_response
 
 
 # FLASK_APP=api.py flask run
@@ -41,7 +41,7 @@ class group:
 		self.id = group.current_id
 		group.current_id += 1
 
-	def add_member(self, member):		# redundante?
+	def add_member(self, member):		# redundante?	
 		if member not in self.members:
 			self.members.append(member)
 		member.group = self				# sobreescribe el grupo antiguo
@@ -65,7 +65,7 @@ def traducir(numero, ret_object=False):
 @app.route("/")
 def index():
 	# main page
-	return """
+	a = """
 <link rel= "stylesheet" type= "text/css" href= "/static/styles/style.css">
 <body background="/static/pantalla.png">
 <form action="/register" method="post" id="custom-search-form" class="form-search form-horizontal pull-right">
@@ -73,9 +73,21 @@ def index():
 </form>
 </body>
 """
+	return render_template("main.html")
 
 
+@app.route('/user')
+def show_user():
+	return render_template("user.html")
 
+@app.route('/user/friends')
+def show_friends():
+	name = request.cookies.get('userID')
+	print(name)
+	#active_user = skier.all_skiers[int(userid)]
+	#amigos=active_user.group.members
+	amigos=[["Rolf",True],["Cristobal",False],["Ale <3", False]]
+	return render_template("friends.html",results=amigos)
 
 @app.route('/main/<int:userid>')
 def show_main(userid):
@@ -111,7 +123,10 @@ def register():
 	if request.method == 'POST':
 		identificador = request.form['identificador']
 		print("El numero es '" + identificador + "'")
-		return redirect('/main/{}'.format(traducir(identificador)))
+		resp = make_response(render_template('user.html'))
+		resp.set_cookie('userID', identificador)
+		return resp
+		#return redirect('/main/{}'.format(traducir(identificador)))
 	else:
 		return "404 register Intente de nuevo"
 
@@ -145,3 +160,5 @@ def alert():
 	else:
 		return "404 alert Intente de nuevo"
 
+if __name__ == "__main__":
+    app.run()
