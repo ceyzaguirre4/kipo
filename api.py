@@ -3,6 +3,11 @@ from flask import request, redirect, render_template, make_response
 from time import time
 
 
+# todo: falta hacer el focus constante en todo !!!
+# todo: falta hacer pagina de cambio de nombre
+# todo: boton de agregar persona en vez de espacio en armar_grupo.html
+
+
 # FLASK_APP=api.py flask run
 
 app = Flask(__name__)
@@ -36,7 +41,7 @@ class skier:
 		return "User card id: " + str(self.card_read)
 
 	def access(self, lift):
-		self.history.append(lift, time)
+		self.history.append((lift, time))
 
 
 class group:
@@ -77,7 +82,11 @@ def index():
 def show_user():
 	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]		# si no existe se crea al traducir y luego lo busca
 	yo.access("Parvita")
+	if not yo.name:
+		return render_template("user.html")
+		return redirect('elegir_nombre/{}'.format(yo.card_read))		# elegir un nombre
 	return render_template("user.html")
+
 
 @app.route('/user/friends')
 def show_friends():
@@ -156,7 +165,8 @@ def add_friends():
 	amigo = traducir(identificador_amigo, True)
 	adder.group.add_member(amigo)
 	if not amigo.name:
-		return redirect('/user/group')		# elegir un nombre
+		return redirect('/user/group')
+		return redirect('elegir_nombre/{}'.format(amigo.card_read))		# elegir un nombre
 	return redirect('/user/group')
 
 
@@ -172,7 +182,14 @@ def friend_history(index):
 	# llamado por friends.html devuelve el indice en la lista de amigos del clickeado
 	hora_actual = time()
 	posicion_actual = "Parvita"		# asume que todos estan en parvita mientras no haya sistema mas preciso
+	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
+	friend = yo.group.members[int(index)]
 	return "friend history"
+
+@app.route('/elegir_nombre/<int:identifier>')
+def elegir_nombre(identifier):
+	esquiador = skier.all_skiers[int(identifier)]
+	return "choose name"
 
 
 # @app.route('/print_test', methods=['GET', 'POST'])
