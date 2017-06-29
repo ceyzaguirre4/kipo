@@ -55,8 +55,8 @@
         <div class="modal-content">
           <div class="modal-body">
             <div>
-                <p class="place-amigo" style="font-size: 40px">
-                    Su alerta ha sido enviada
+                <p class="place-amigo" style="font-size: 40px;text-align: center;">
+                    Voy en camino, espérame ahí
                 </p>
             </div>
             <div style="text-align: center;">
@@ -82,8 +82,16 @@
     <script src="{{ url_for('static',filename='js/bootstrap.min.js')}}"></script>
     
     <script>
+    var response = false
+    {% if response %}
+        response = true;
+    {% endif %}
       function goBack() {
           window.history.back();
+      }
+      //response=true
+      if (response){
+        $('#modal').modal()
       }
     </script>
     

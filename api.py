@@ -84,7 +84,10 @@ def index():
 
 @app.route('/user')
 def show_user():
-	return render_template("user.html")
+	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
+	responde = yo.alert_responded
+	print(responde)
+	return render_template("user.html", response=responde)
 
 
 @app.route('/user/friends')
