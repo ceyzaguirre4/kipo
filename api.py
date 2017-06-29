@@ -4,9 +4,11 @@ from time import time
 from datetime import timedelta
 
 
-# todo: falta hacer el focus constante en todo !!!
+# todo: falta hacer el focus constante en safari !!!
 # todo: falta hacer pagina de cambio de nombre
 # todo: boton de agregar persona en vez de espacio en armar_grupo.html
+# todo: alert en user
+# todo: alert cuando se manda mensaje
 
 
 # FLASK_APP=api.py flask run
@@ -23,6 +25,12 @@ class lift:
 # class run:
 # 	def __init__(self, identificador):
 # 		self.identificador = identificador
+
+
+
+
+
+
 ####################################################################
 
 class skier:
@@ -38,9 +46,15 @@ class skier:
 		self.alert_responded = False
 
 	def __repr__(self):
-		if self.name:
-			return self.name
-		return "User card id: " + str(self.card_read)
+		# if self.name:
+		# 	return self.name
+		# return "User card id: " + str(self.card_read)
+		if self.card_read == 1:
+			return "Fran"
+		elif self.card_read == 2:
+			return "Ale"
+		else:
+			return "Jose"
 
 	def access(self, lift):
 		self.history.append((lift, time()))
