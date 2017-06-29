@@ -179,6 +179,7 @@ def alert():
 	# recibe solicitud de alerta
 	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
 	yo.alert = True
+	return "buena"
 	return redirect('user')
 
 
