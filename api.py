@@ -172,7 +172,7 @@ def friend_history(index):
 	# llamado por friends.html devuelve el indice en la lista de amigos del clickeado
 	hora_actual = time()
 	posicion_actual = "Parvita"		# asume que todos estan en parvita mientras no haya sistema mas preciso
-	return "friend history"
+	return render_template("friend_history.html", results=[(posicion_actual, hora_actual)])
 
 
 # @app.route('/print_test', methods=['GET', 'POST'])

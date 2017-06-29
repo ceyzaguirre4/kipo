@@ -98,9 +98,28 @@
 
 .place-amigo{
     font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    text-align: left;
+    color: #70CFBC!important;
+}
+
+.button-alerta{
+    border-radius: 10px!important;
+    background-color: #D02C61!important;
+    color: #fff!important;
+    cursor: pointer;
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     line-height: 0;
     font-size: 20px;
-    text-align: left;
-    color: #70CFBC!important;
+    padding: 1em;
+    position: relative;
+    border:none;
+    text-align: center;
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+    margin-left: 0px!important;
 }
