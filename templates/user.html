@@ -45,18 +45,43 @@
         <div class="row" style="margin-top:20px">
             <div class="col-md-4"></div>
             <div class="col-md-4">
-                <a href="/alert" class="btn button-main" style="background-color: #D02C61 !important;">Alerta</a>
+                <button class="btn button-main" id="alerta"  style="background-color: #D02C61 !important;">Enviar Alerta</button>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+
+<!-- modal1 -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal1">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-body">
             <div>
                 <p class="place-amigo" style="font-size: 40px;text-align: center;">
                     Voy en camino, espérame ahí
+                </p>
+            </div>
+            <div style="text-align: center;">
+              <img src="/static/icono.jpeg">
+            </div>
+          </div>
+            
+          <div class="modal-footer">
+            <button type="button" class="btn button-input" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+<!-- modal2 -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal2">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div>
+                <p class="place-amigo" style="font-size: 40px">
+                    Su alerta ha sido enviada
                 </p>
             </div>
             <div style="text-align: center;">
@@ -91,8 +116,22 @@
       }
       //response=true
       if (response){
-        $('#modal').modal()
+        $('#modal1').modal()
       }
+
+      $('#alerta').on('click',function(){
+      var data = {"nada":"nada"}
+      $.ajax({
+            method: "GET",
+            url: "/alert",
+            data: data,
+            success: function(result){
+              console.log(result)
+            }
+          })
+      $('#modal2').modal();
+
+    })
     </script>
     
   </body>
