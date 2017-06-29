@@ -217,6 +217,13 @@ def set_location(location):
 	return resp
 
 
+@app.route('/clear_db')
+def clear_db():
+	# para borrar db
+	skier.all_skiers.clear()
+	return redirect('/')
+
+
 # @app.route('/print_test', methods=['GET', 'POST'])
 # def print_test():
 # 	# funcion para hacer testing
