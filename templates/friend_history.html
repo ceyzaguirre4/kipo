@@ -60,11 +60,12 @@
             </div>
             {% else %}
               <div class="col-md-9"></div>
-              <div class="col-md-3">
-                <form action="/voy/{{ alertador }}" id="custom-search-form" class="form-search form-horizontal pull-right">
-                  <button class="button-alerta">Voy en camino</button>
-                </form>
-              </div>
+            <div class="col-md-3">
+              <!--form name="myform" action="/alert" id="custom-search-form" class="form-search form-horizontal pull-right">
+                <button class="button-alerta" id="alerta">Enviar Alerta</button>
+              </form-->
+              <button class="button-alerta" id="alerta">Voy en camino</button>
+            </div>
             {% endif %}
         </div>
     </div>
@@ -76,7 +77,11 @@
           <div class="modal-body">
             <div>
                 <p class="place-amigo" style="font-size: 40px">
+                {% if not alert %}
                     Su alerta ha sido enviada
+                {% else %}
+                    Mensaje ha sido enviado
+                {% endif %}
                 </p>
             </div>
             <div style="text-align: center;">
@@ -108,7 +113,7 @@
       var data = {"nada":"nada"}
       $.ajax({
             method: "GET",
-            url: "/alert",
+            url: {% if not alert %} "/alert" {% else %} "/voy/{{ alertador }}" {% endif %},
             data: data,
             success: function(result){
               console.log(result)
