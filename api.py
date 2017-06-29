@@ -153,7 +153,10 @@ def add_friends():
 	adder = skier.all_skiers[int(traducir(identificador))]
 	if not adder.group:
 		adder.group = group(adder)
-	adder.group.add_member(traducir(identificador_amigo, True))
+	amigo = traducir(identificador_amigo, True)
+	adder.group.add_member(amigo)
+	if not amigo.name:
+		return redirect('/user/group')		# elegir un nombre
 	return redirect('/user/group')
 
 
