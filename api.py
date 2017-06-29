@@ -36,7 +36,7 @@ class skier:
 		return "User card id: " + str(self.card_read)
 
 	def access(self, lift):
-		self.history.append(lift, time)
+		self.history.append([lift, time()])
 
 
 class group:
