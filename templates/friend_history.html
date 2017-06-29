@@ -50,14 +50,23 @@
         {% endfor %}
         <div class="row" style="background-image: url(/static/mapa.png); height: 596px">
             <!--img src="/static/mapa.png" style="width: 100%"-->
-            <div class="col-md-9"></div>
-            <div class="col-md-3">
-              <form name="myform" action="/alert" id="custom-search-form" class="form-search form-horizontal pull-right">
-                <button class="button-alerta">Enviar Alerta</button>
-              </form>
+            {% if not alert %}
+              <div class="col-md-9"></div>
+              <div class="col-md-3">
+                <form name="myform" action="/alert" id="custom-search-form" class="form-search form-horizontal pull-right">
+                  <button class="button-alerta">Enviar Alerta</button>
+                </form>
+              </div>
+            {% else %}
+              <div class="col-md-9"></div>
+              <div class="col-md-3">
+                <form action="/voy/{{ alertador }}" id="custom-search-form" class="form-search form-horizontal pull-right">
+                  <button class="button-alerta">Voy en camino</button>
+                </form>
+              </div>
+            {% endif %}
 
-            </div>
-              
+                
         </div>
     </div>
 

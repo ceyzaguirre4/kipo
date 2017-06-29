@@ -35,6 +35,7 @@ class skier:
 		self.group = None
 		self.name = None
 		self.history = []
+		self.alert_responded = False
 
 	def __repr__(self):
 		if self.name:
@@ -182,6 +183,22 @@ def alert():
 	return redirect('user')
 
 
+@app.route('/voy/<int:identifier>')
+def voy(identifier):
+	# cuando el usuario se compromete a ir a buscar al alertador.
+	hora_actual = time()
+	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
+	friend = skier.all_skiers[int(identifier)]
+	ultima_posicion, hora = friend.history[-1]
+	alertador = friend.card_read
+	friend.alert = False						# ya no sale alert !!!
+	friend.alert_responded = True
+	if ultima_posicion: 
+		return render_template("friend_history.html", results=[(ultima_posicion, timedelta(seconds=int(hora_actual-hora)))], nombre=str(friend), alertador=alertador, alert=friend.alert)
+	else:		# por si se les olvida hacer el set_location
+		return render_template("friend_history.html", results=[("Parvita", timedelta(seconds=int(hora_actual-hora)))], nombre=str(friend), alertador=alertador, alert=friend.alert)
+
+
 @app.route('/friend_history/<int:index>')
 def friend_history(index):
 	# llamado por friends.html devuelve el indice en la lista de amigos del clickeado
@@ -189,10 +206,11 @@ def friend_history(index):
 	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
 	friend = yo.group.members[int(index)]
 	ultima_posicion, hora = friend.history[-1]
+	alertador = friend.card_read
 	if ultima_posicion: 
-		return render_template("friend_history.html", results=[(ultima_posicion, timedelta(seconds=int(hora_actual-hora)))], nombre=str(friend))
+		return render_template("friend_history.html", results=[(ultima_posicion, timedelta(seconds=int(hora_actual-hora)))], nombre=str(friend), alertador=alertador, alert=friend.alert)
 	else:		# por si se les olvida hacer el set_location
-		return render_template("friend_history.html", results=[("Parvita", timedelta(seconds=int(hora_actual-hora)))], nombre=str(friend))
+		return render_template("friend_history.html", results=[("Parvita", timedelta(seconds=int(hora_actual-hora)))], nombre=str(friend), alertador=alertador, alert=friend.alert)
 
 
 @app.route('/elegir_nombre/<int:identifier>')
