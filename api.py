@@ -41,7 +41,7 @@ class skier:
 		return "User card id: " + str(self.card_read)
 
 	def access(self, lift):
-		self.history.append((lift, time))
+		self.history.append((lift, time()))
 
 
 class group:
@@ -184,7 +184,7 @@ def friend_history(index):
 	posicion_actual = "Parvita"		# asume que todos estan en parvita mientras no haya sistema mas preciso
 	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
 	friend = yo.group.members[int(index)]
-	return "friend history"
+	return render_template("friend_history.html", results=[(posicion_actual, hora_actual)])
 
 @app.route('/elegir_nombre/<int:identifier>')
 def elegir_nombre(identifier):
