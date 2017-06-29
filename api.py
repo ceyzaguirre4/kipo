@@ -146,7 +146,8 @@ def register():
 	# receive card data
 	identificador = request.form['identificador']
 	print("El numero es '" + identificador + "'")
-	resp = make_response(render_template('user.html'))
+	#resp = make_response(render_template('user.html'))
+	resp = redirect("/user")
 	resp.set_cookie('userID', identificador)
 	yo = skier.all_skiers[int(traducir(identificador))]		# si no existe se crea al traducir y luego lo busca
 	yo.access(request.cookies.get('posicion'))
