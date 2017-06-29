@@ -117,34 +117,6 @@ def create_group():
 	return render_template("armar_grupo.html",results=amigos, number=1)
 
 
-# @app.route('/main/<int:userid>')
-# def show_main(userid):
-# 	# show the user profile for that user
-# 	amigos = ""
-# 	active_user = skier.all_skiers[int(userid)]
-# 	if active_user.group:
-# 		for amigo in active_user.group.members:
-# 			amigos += "<p>" + str(amigo) + "  status alert: " + str(amigo.alert) + "</p>"
-# 	return """
-# <link rel= "stylesheet" type= "text/css" href= "/static/styles/style.css">
-# <body background="/static/pantalla.png">
-# <h1>agregar amigos</h1>
-# <form action="/add_friends" method="post" id="custom-search-form" class="form-search form-horizontal pull-right">
-#   <input type="hidden" name="identificador" value="{}">
-#   <input type="text" name="identificador_amigo" placeholder="identificador" autofocus></input>
-#   """.format(userid) + amigos + """  
-#   <img src="/static/pantalla.png" width="1200">
-# </form>
-# <form action="/alert" method="post">
-# 	<input type="hidden" name="identificador" value="{}">
-#     <input type="submit" value="ALERT" />
-# </form>
-# <p>alert status = {}</p>
-# </body>
-# """.format(userid, active_user.alert)
-
-
-
 @app.route('/register', methods=['POST'])
 def register():
 	# receive card data
