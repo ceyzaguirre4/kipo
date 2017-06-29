@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask import request, redirect, render_template, make_response
 from time import time
+from datetime import timedelta
 
 
 # todo: falta hacer el focus constante en todo !!!
@@ -42,6 +43,8 @@ class skier:
 
 	def access(self, lift):
 		self.history.append((lift, time()))
+		print("acceso")
+		print(self.history)
 
 
 class group:
@@ -80,11 +83,6 @@ def index():
 
 @app.route('/user')
 def show_user():
-	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]		# si no existe se crea al traducir y luego lo busca
-	yo.access("Parvita")
-	if not yo.name:
-		return render_template("user.html")
-		return redirect('elegir_nombre/{}'.format(yo.card_read))		# elegir un nombre
 	return render_template("user.html")
 
 
@@ -149,6 +147,11 @@ def register():
 	print("El numero es '" + identificador + "'")
 	resp = make_response(render_template('user.html'))
 	resp.set_cookie('userID', identificador)
+	yo = skier.all_skiers[int(traducir(identificador))]		# si no existe se crea al traducir y luego lo busca
+	yo.access(request.cookies.get('posicion'))
+	# if not yo.name:													# ojo, que devuelva cookie
+	# 	return render_template("user.html")
+	# 	return redirect('elegir_nombre/{}'.format(yo.card_read))		# elegir un nombre
 	return resp
 
 
@@ -163,6 +166,7 @@ def add_friends():
 	if not adder.group:
 		adder.group = group(adder)
 	amigo = traducir(identificador_amigo, True)
+	amigo.access(request.cookies.get('posicion'))
 	adder.group.add_member(amigo)
 	if not amigo.name:
 		return redirect('/user/group')
@@ -182,16 +186,26 @@ def alert():
 def friend_history(index):
 	# llamado por friends.html devuelve el indice en la lista de amigos del clickeado
 	hora_actual = time()
-	posicion_actual = "Parvita"		# asume que todos estan en parvita mientras no haya sistema mas preciso	!!! (cambiar)
 	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
 	friend = yo.group.members[int(index)]
-	return render_template("friend_history.html", results=[(posicion_actual, hora_actual)], nombre=str(friend))
+	ultima_posicion, hora = friend.history[-1]
+	if ultima_posicion: 
+		return render_template("friend_history.html", results=[(ultima_posicion, timedelta(seconds=int(hora_actual-hora)))], nombre=str(friend))
+	else:		# por si se les olvida hacer el set_location
+		return render_template("friend_history.html", results=[("Parvita", timedelta(seconds=int(hora_actual-hora)))], nombre=str(friend))
 
 
 @app.route('/elegir_nombre/<int:identifier>')
 def elegir_nombre(identifier):
 	esquiador = skier.all_skiers[int(identifier)]
 	return "choose name"
+
+
+@app.route('/set_location/<location>')
+def set_location(location):
+	resp = make_response(render_template('main.html'))
+	resp.set_cookie('posicion', location)
+	return resp
 
 
 # @app.route('/print_test', methods=['GET', 'POST'])
