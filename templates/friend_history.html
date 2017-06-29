@@ -28,7 +28,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="titulo" style="color: white!important;"></a>
+            <a class="titulo" style="color: white!important;">{{ nombre }}</a>
           </li>
         </ul>
       </div>
@@ -52,7 +52,10 @@
             <!--img src="/static/mapa.png" style="width: 100%"-->
             <div class="col-md-9"></div>
             <div class="col-md-3">
-              <button class="button-alerta">Enviar Alerta</button>
+              <form name="myform" action="/alert" id="custom-search-form" class="form-search form-horizontal pull-right">
+                <button class="button-alerta">Enviar Alerta</button>
+              </form>
+
             </div>
               
         </div>

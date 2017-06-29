@@ -10,8 +10,8 @@ from time import time
 
 # FLASK_APP=api.py flask run
 
-app = Flask(__name__)
 
+app = Flask(__name__)
 
 
 # para instrucciones paso por paso para llegar de A a B
@@ -177,14 +177,16 @@ def alert():
 	yo.alert = True
 	return redirect('user')
 
+
 @app.route('/friend_history/<int:index>')
 def friend_history(index):
 	# llamado por friends.html devuelve el indice en la lista de amigos del clickeado
 	hora_actual = time()
-	posicion_actual = "Parvita"		# asume que todos estan en parvita mientras no haya sistema mas preciso
+	posicion_actual = "Parvita"		# asume que todos estan en parvita mientras no haya sistema mas preciso	!!! (cambiar)
 	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
 	friend = yo.group.members[int(index)]
-	return render_template("friend_history.html", results=[(posicion_actual, hora_actual)])
+	return render_template("friend_history.html", results=[(posicion_actual, hora_actual)], nombre=str(friend))
+
 
 @app.route('/elegir_nombre/<int:identifier>')
 def elegir_nombre(identifier):
