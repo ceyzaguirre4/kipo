@@ -52,11 +52,12 @@
             <!--img src="/static/mapa.png" style="width: 100%"-->
             {% if not alert %}
               <div class="col-md-9"></div>
-              <div class="col-md-3">
-                <form name="myform" action="/alert" id="custom-search-form" class="form-search form-horizontal pull-right">
-                  <button class="button-alerta">Enviar Alerta</button>
-                </form>
-              </div>
+            <div class="col-md-3">
+              <!--form name="myform" action="/alert" id="custom-search-form" class="form-search form-horizontal pull-right">
+                <button class="button-alerta" id="alerta">Enviar Alerta</button>
+              </form-->
+              <button class="button-alerta" id="alerta">Enviar Alerta</button>
+            </div>
             {% else %}
               <div class="col-md-9"></div>
               <div class="col-md-3">
@@ -65,11 +66,30 @@
                 </form>
               </div>
             {% endif %}
-
-                
         </div>
     </div>
 
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div>
+                <p class="place-amigo" style="font-size: 40px">
+                    Su alerta ha sido enviada
+                </p>
+            </div>
+            <div style="text-align: center;">
+              <img src="/static/icono.jpeg">
+            </div>
+          </div>
+            
+          <div class="modal-footer">
+            <button type="button" class="btn button-input" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 
     <!-- Bootstrap core JavaScript
@@ -84,6 +104,19 @@
     function goBack() {
           window.history.back();
       }
+    $('#alerta').on('click',function(){
+      var data = {"nada":"nada"}
+      $.ajax({
+            method: "GET",
+            url: "/alert",
+            data: data,
+            success: function(result){
+              console.log(result)
+            }
+          })
+      $('#modal').modal();
+
+    })
 
     </script>
     
