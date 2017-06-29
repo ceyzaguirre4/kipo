@@ -85,9 +85,10 @@ def index():
 @app.route('/user')
 def show_user():
 	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
-	responde = yo.alert_responded
-	print(responde)
-	return render_template("user.html", response=responde)
+	responded = yo.alert_responded
+	print(responded)
+	yo.alert_responded = False
+	return render_template("user.html", response=responded)
 
 
 @app.route('/user/friends')
@@ -184,7 +185,6 @@ def alert():
 	# recibe solicitud de alerta
 	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
 	yo.alert = True
-	return "buena"
 	return redirect('user')
 
 
