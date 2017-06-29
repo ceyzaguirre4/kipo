@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from flask import request, redirect, render_template, make_response
+from time import time
 
 
 # FLASK_APP=api.py flask run
@@ -9,9 +10,9 @@ app = Flask(__name__)
 
 
 # para instrucciones paso por paso para llegar de A a B
-# class lift:
-# 	def __init__(self, identificador):
-# 		self.identificador = identificador
+class lift:
+	def __init__(self, identificador):
+		self.identificador = identificador
 
 # class run:
 # 	def __init__(self, identificador):
@@ -27,11 +28,15 @@ class skier:
 		skier.all_skiers[card_read] = self
 		self.group = None
 		self.name = None
+		self.history = []
 
 	def __repr__(self):
 		if self.name:
 			return self.name
 		return "User card id: " + str(self.card_read)
+
+	def access(self, lift):
+		self.history.append(lift, time)
 
 
 class group:
@@ -70,6 +75,8 @@ def index():
 
 @app.route('/user')
 def show_user():
+	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]		# si no existe se crea al traducir y luego lo busca
+	yo.access("Parvita")
 	return render_template("user.html")
 
 @app.route('/user/friends')
@@ -160,6 +167,8 @@ def alert():
 @app.route('/friend_history/<int:index>')
 def friend_history(index):
 	# llamado por friends.html devuelve el indice en la lista de amigos del clickeado
+	hora_actual = time()
+	posicion_actual = "Parvita"		# asume que todos estan en parvita mientras no haya sistema mas preciso
 	return "friend history"
 
 
