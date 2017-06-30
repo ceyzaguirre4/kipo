@@ -7,8 +7,6 @@ from datetime import timedelta
 # todo: falta hacer el focus constante en safari !!!
 # todo: falta hacer pagina de cambio de nombre
 # todo: boton de agregar persona en vez de espacio en armar_grupo.html
-# todo: alert en user
-# todo: alert cuando se manda mensaje
 
 
 # FLASK_APP=api.py flask run
@@ -25,10 +23,6 @@ class lift:
 # class run:
 # 	def __init__(self, identificador):
 # 		self.identificador = identificador
-
-
-
-
 
 
 ####################################################################
@@ -196,13 +190,12 @@ def friend_history(index):
 	hora_actual = time()
 	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
 	friend = yo.group.members[int(index)]
-	ultima_posicion, hora = friend.history[-1]
+	# ultima_posicion, hora = friend.history[-1]
 	alertador = friend.card_read
-	if ultima_posicion: 
-		return render_template("friend_history.html", results=[(ultima_posicion, timedelta(seconds=int(hora_actual-hora)))], nombre=str(friend), alertador=alertador, alert=friend.alert)
-	else:		# por si se les olvida hacer el set_location
-		return render_template("friend_history.html", results=[("Parvita", timedelta(seconds=int(hora_actual-hora)))], nombre=str(friend), alertador=alertador, alert=friend.alert)
-
+	if len(friend.history) >=3:
+		return render_template("friend_history.html", results=[(ultima_posicion if ultima_posicion else "Parvita", timedelta(seconds=int(hora_actual-hora))) for ultima_posicion, hora in friend.history[-3:]], nombre=str(friend), alertador=alertador, alert=friend.alert)
+	else:
+		return render_template("friend_history.html", results=[(ultima_posicion if ultima_posicion else "Parvita", timedelta(seconds=int(hora_actual-hora))) for ultima_posicion, hora in friend.history], nombre=str(friend), alertador=alertador, alert=friend.alert)
 
 @app.route('/elegir_nombre/<int:identifier>')
 def elegir_nombre(identifier):
