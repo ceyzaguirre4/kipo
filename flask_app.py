@@ -215,8 +215,8 @@ def friend_history(index):
 	friend = yo.group.members[int(index)]
 	# ultima_posicion, hora = friend.history[-1]
 	alertador = friend.card_read
-	if len(friend.history):
-		generate_map(friend.history[-1][0].coordinates, friend.history[-1][0].identificador)
+	# if len(friend.history):
+	# 	generate_map(friend.history[-1][0].coordinates, friend.history[-1][0].identificador)
 	if len(friend.history) >=3:
 		return render_template("friend_history.html", results=[(ultima_posicion.name, timedelta(seconds=int(hora_actual-hora))) for ultima_posicion, hora in friend.history[-3:]], nombre=str(friend), alertador=alertador, alert=friend.alert, identificador_lift=friend.history[-1][0].identificador)
 	else:
