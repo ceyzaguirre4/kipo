@@ -2,6 +2,8 @@ from flask import Flask, jsonify
 from flask import request, redirect, render_template, make_response
 from time import time
 from datetime import timedelta
+from map_generator import generate_map
+from time import sleep
 
 
 # todo: falta hacer el focus constante en safari !!!
@@ -17,13 +19,34 @@ app = Flask(__name__)
 
 # para instrucciones paso por paso para llegar de A a B
 class lift:
-	def __init__(self, identificador):
+	all_lifts = {}
+	def __init__(self, identificador, nombre, coord):
 		self.identificador = identificador
+		self.name = nombre 			# por ahora !!!!
+		self.coordinates = coord			# guardar todo en db
+		lift.all_lifts[identificador] = self
+
+	def __repr__(self):
+		return self.name
 
 # class run:
 # 	def __init__(self, identificador):
 # 		self.identificador = identificador
 
+def traducir_lift(identificador):
+	print(lift.all_lifts)
+	try:	
+		identificador = int(identificador)
+	except: 
+		return lift.all_lifts[0]
+	if not identificador in lift.all_lifts:	# crea nuevos esquiadores automaticamente
+		# _ = lift(identificador, nombre)
+		raise Exception("llego a que no existe!!!")
+	return lift.all_lifts[identificador]
+
+
+for n, tupla in enumerate([("parvita", (520, 435)), ("barros negros", (210, 300)), ("las vegas", (510, 375)), ("franciscano", (740, 165)), ("manzanito", (235, 520))]):
+	_ = lift(n, tupla[0], tupla[1])
 
 ####################################################################
 
@@ -51,7 +74,7 @@ class skier:
 			return "Jose"
 
 	def access(self, lift):
-		self.history.append((lift, time()))
+		self.history.append((traducir_lift(lift), time()))
 		print("acceso")
 		print(self.history)
 
@@ -192,10 +215,12 @@ def friend_history(index):
 	friend = yo.group.members[int(index)]
 	# ultima_posicion, hora = friend.history[-1]
 	alertador = friend.card_read
+	if len(friend.history):
+		generate_map(friend.history[-1][0].coordinates, friend.history[-1][0].identificador)
 	if len(friend.history) >=3:
-		return render_template("friend_history.html", results=[(ultima_posicion if ultima_posicion else "Parvita", timedelta(seconds=int(hora_actual-hora))) for ultima_posicion, hora in friend.history[-3:]], nombre=str(friend), alertador=alertador, alert=friend.alert)
+		return render_template("friend_history.html", results=[(ultima_posicion.name, timedelta(seconds=int(hora_actual-hora))) for ultima_posicion, hora in friend.history[-3:]], nombre=str(friend), alertador=alertador, alert=friend.alert, identificador_lift=friend.history[-1][0].identificador)
 	else:
-		return render_template("friend_history.html", results=[(ultima_posicion if ultima_posicion else "Parvita", timedelta(seconds=int(hora_actual-hora))) for ultima_posicion, hora in friend.history], nombre=str(friend), alertador=alertador, alert=friend.alert)
+		return render_template("friend_history.html", results=[(ultima_posicion.name, timedelta(seconds=int(hora_actual-hora))) for ultima_posicion, hora in friend.history], nombre=str(friend), alertador=alertador, alert=friend.alert, identificador_lift=friend.history[-1][0].identificador)
 
 @app.route('/elegir_nombre/<int:identifier>')
 def elegir_nombre(identifier):
