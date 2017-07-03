@@ -22,7 +22,7 @@ class lift:
 	all_lifts = {}
 	def __init__(self, identificador, nombre, coord):
 		self.identificador = identificador
-		self.name = nombre 			# por ahora !!!!
+		self.name = nombre
 		self.coordinates = coord			# guardar todo en db
 		lift.all_lifts[identificador] = self
 
