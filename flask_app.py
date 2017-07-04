@@ -119,7 +119,7 @@ def show_user():
 	responded = yo.alert_responded
 	print(responded)
 	yo.alert_responded = False
-	return render_template("user.html", response=responded)
+	return render_template("user.html", response=responded, has_friends=True if yo.group else False)
 
 
 @app.route('/user/friends')

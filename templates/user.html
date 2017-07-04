@@ -33,7 +33,7 @@
         <div class="row" style="margin-top:20px">
             <div class="col-md-4"></div>
             <div class="col-md-4">
-                <a href="/user/group" class="btn button-main">Crear Grupo</a>
+                <a href="/user/group" class="btn button-main">{% if has_friends %} Editar Grupo {% else %} Crear Grupo {% endif %}</a>
             </div>
         </div>
         <div class="row" style="margin-top:20px">
