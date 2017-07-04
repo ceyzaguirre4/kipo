@@ -117,7 +117,6 @@ def index():
 def show_user():
 	yo = skier.all_skiers[int(traducir(request.cookies.get('userID')))]
 	responded = yo.alert_responded
-	print(responded)
 	yo.alert_responded = False
 	return render_template("user.html", response=responded, has_friends=True if yo.group else False)
 
@@ -156,12 +155,15 @@ def register():
 	#resp = make_response(render_template('user.html'))
 	resp = redirect("/user")
 	resp.set_cookie('userID', identificador)
-	yo = skier.all_skiers[int(traducir(identificador))]		# si no existe se crea al traducir y luego lo busca
-	yo.access(request.cookies.get('posicion'))
-	# if not yo.name:													# ojo, que devuelva cookie
-	# 	return render_template("user.html")
-	# 	return redirect('elegir_nombre/{}'.format(yo.card_read))		# elegir un nombre
-	return resp
+	if identificador:
+		yo = skier.all_skiers[int(traducir(identificador))]		# si no existe se crea al traducir y luego lo busca
+		yo.access(request.cookies.get('posicion'))
+		# if not yo.name:													# ojo, que devuelva cookie
+		# 	return render_template("user.html")
+		# 	return redirect('elegir_nombre/{}'.format(yo.card_read))		# elegir un nombre
+		return resp
+	else:
+		return redirect('/')
 
 
 @app.route('/add_friends', methods=['POST'])
@@ -222,10 +224,18 @@ def friend_history(index):
 	else:
 		return render_template("friend_history.html", results=[(ultima_posicion.name, timedelta(seconds=int(hora_actual-hora))) for ultima_posicion, hora in friend.history], nombre=str(friend), alertador=alertador, alert=friend.alert, identificador_lift=friend.history[-1][0].identificador)
 
-@app.route('/elegir_nombre/<int:identifier>')
-def elegir_nombre(identifier):
-	esquiador = skier.all_skiers[int(identifier)]
-	return "choose name"
+
+@app.route('/logout')
+def logout():
+	resp = redirect("/")
+	resp.set_cookie('userID', '')
+	return resp
+
+
+# @app.route('/elegir_nombre/<int:identifier>')
+# def elegir_nombre(identifier):
+# 	esquiador = skier.all_skiers[int(identifier)]
+# 	return "choose name"
 
 
 @app.route('/set_location/<location>')
